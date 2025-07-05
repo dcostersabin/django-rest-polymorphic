@@ -101,6 +101,11 @@ class PolymorphicSerializer(serializers.Serializer):
         return valid and child_valid
 
     def run_validation(self, data=empty):
+
+        (is_empty_value, data) = self.validate_empty_values(data)
+        if is_empty_value:
+            return data
+
         if self.partial and self.instance:
             resource_type = self.to_resource_type(self.instance)
             serializer = self._get_serializer_from_model_or_instance(self.instance)
